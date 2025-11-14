@@ -28,23 +28,24 @@ public class MySQLLegajosDao implements GenericDao<Legajo> {
 
     @Override
     public void update(Legajo entity) throws SQLException {
-        String sql = "UPDATE legajos SET categoria=?, estado=?, fechaAlta=?, observaciones=? WHERE nroLegajo=?";
+        String sql = "UPDATE legajos SET categoria=?, estado=?, fechaAlta=?, observaciones=?, nroLegajo=? WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, entity.getCategoria());
             stmt.setString(2, entity.getEstado().name());
             stmt.setString(3, entity.getFechaAlta().toString());
             stmt.setString(4, entity.getObservaciones());
             stmt.setString(5, entity.getNroLegajo());
+            stmt.setInt(6, entity.getId());
 
             stmt.executeUpdate();
         }
     }
 
     @Override
-    public void delete(String nroLegajo) throws SQLException {
-        String sql = "DELETE FROM legajos  WHERE nroLegajo=?";
+    public void delete(String id) throws SQLException {
+        String sql = "DELETE FROM legajos  WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, nroLegajo);
+            stmt.setInt(1, Integer.parseInt(id));
         }
     }
 
@@ -64,31 +65,31 @@ public class MySQLLegajosDao implements GenericDao<Legajo> {
 
     @Override
     public void updateTx(Legajo entity, Connection conn) throws SQLException {
-        String sql = "UPDATE legajos SET categoria=?, estado=?, fechaAlta=?, observaciones=? WHERE nroLegajo=?";
+        String sql = "UPDATE legajos SET categoria=?, estado=?, fechaAlta=?, observaciones=? WHERE id=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, entity.getCategoria());
             stmt.setString(2, entity.getEstado().name());
             stmt.setString(3, entity.getFechaAlta().toString());
             stmt.setString(4, entity.getObservaciones());
-            stmt.setString(5, entity.getNroLegajo());
+            stmt.setInt(5, entity.getId());
 
             stmt.executeUpdate();
         }
     }
 
     @Override
-    public void delteTx(String nroLegajo, Connection conn) throws SQLException {
-        String sql = "DELETE FROM legajos  WHERE nroLegajo=?";
+    public void delteTx(String id, Connection conn) throws SQLException {
+        String sql = "DELETE FROM legajos  WHERE id=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, nroLegajo);
+            stmt.setInt(1, Integer.parseInt(id));
         }
     }
 
     @Override
-    public Legajo getById(String nroLegajo) throws SQLException {
+    public Legajo getById(String id) throws SQLException {
         String sql = "SELECT * FROM legajos  WHERE nroLegajo=?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, nroLegajo);
+            stmt.setInt(1, Integer.parseInt(id));
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new Legajo(

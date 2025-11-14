@@ -3,7 +3,8 @@ package entities;
 import java.time.LocalDate;
 
 public class Legajo {
-    private String nroLegajo; // NOT NULL, UNIQUE, máx. 20
+    private int id; // NOT NULL, UNIQUE, PRIMARY KEY
+    private String nroLegajo; // máx. 20
     private String categoria; // máx. 30
     private Estado estado; // NOT NULL
     private LocalDate fechaAlta;
@@ -21,6 +22,10 @@ public class Legajo {
         this.setEstado(estado);
         this.setFechaAlta(fechaAlta);
         this.setObservaciones(observaciones);
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setNroLegajo(String nroLegajo) {
@@ -66,6 +71,7 @@ public void setFechaAlta(LocalDate fechaAlta) {
     @Override
     public String toString() {
         return "Legajo{" + "\n" +
+                "  id='" + id + '\'' + ",\n" +
                 "  nroLegajo='" + nroLegajo + '\'' + ",\n" +
                 "  categoria='" + categoria + '\'' + ",\n" +
                 "  estado=" + estado + ",\n" +
@@ -73,6 +79,8 @@ public void setFechaAlta(LocalDate fechaAlta) {
                 "  observaciones='" + observaciones + '\'' + ",\n" +
                 '}';
     }
+
+    public int getId() {return id;}
 
     public String getNroLegajo() {
         return nroLegajo;

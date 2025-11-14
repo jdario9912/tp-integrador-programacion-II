@@ -3,7 +3,8 @@ package entities;
 import java.time.LocalDate;
 
 public class Empleado {
-    private String dni; // NOT NULL, UNIQUE, máx. 15
+    private int id; // NOT NULL, UNIQUE, PRIMARY KEY
+    private String dni; // máx. 15
     private String nombre; // NOT NULL, máx. 80
     private String apellido; // NOT NULL, máx. 80
     private String email; // máx. 120, formato email
@@ -28,6 +29,10 @@ public class Empleado {
         this.setFechaIngreso(fechaIngreso);
         this.setArea(area);
         this.setEliminado(eliminado);
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setEliminado(boolean eliminado) {
@@ -103,6 +108,8 @@ public class Empleado {
                 "  eliminado=" + eliminado + ",\n" +
                 '}';
     }
+
+    public int getId() {return id;}
 
     public boolean isEliminado() {
         return eliminado;

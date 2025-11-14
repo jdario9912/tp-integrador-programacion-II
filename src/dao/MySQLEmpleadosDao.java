@@ -30,7 +30,7 @@ public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDa
 
     @Override
     public void update(Empleado entity) throws SQLException {
-        String sql = "UPDATE empleados SET dni=?, nombre=?, apellido=?, email=?, fechaIngreso=?, area=? WHERE dni=?";
+        String sql = "UPDATE empleados SET dni=?, nombre=?, apellido=?, email=?, fechaIngreso=?, area=?, dni=? WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, entity.getDni());
             stmt.setString(2, entity.getNombre());
@@ -39,16 +39,17 @@ public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDa
             stmt.setString(5, entity.getFechaIngreso().toString());
             stmt.setString(6, entity.getArea());
             stmt.setString(7, entity.getDni());
+            stmt.setInt(8, entity.getId());
 
             stmt.executeUpdate();
         }
     }
 
     @Override
-    public void delete(String dni) throws SQLException {
-        String sql = "DELETE FROM empleados WHERE dni=?";
+    public void delete(String id) throws SQLException {
+        String sql = "DELETE FROM empleados WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, dni);
+            stmt.setInt(1, Integer.parseInt(id));
         }
     }
 
@@ -69,7 +70,7 @@ public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDa
 
     @Override
     public void updateTx(Empleado entity, Connection conn) throws SQLException {
-        String sql = "UPDATE empleados SET dni=?, nombre=?, apellido=?, email=?, fechaIngreso=?, area=? WHERE dni=?";
+        String sql = "UPDATE empleados SET dni=?, nombre=?, apellido=?, email=?, fechaIngreso=?, area=?, dni=? WHERE id=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, entity.getDni());
             stmt.setString(2, entity.getNombre());
@@ -78,16 +79,17 @@ public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDa
             stmt.setString(5, entity.getFechaIngreso().toString());
             stmt.setString(6, entity.getArea());
             stmt.setString(7, entity.getDni());
+            stmt.setInt(7, entity.getId());
 
             stmt.executeUpdate();
         }
     }
 
     @Override
-    public void delteTx(String dni, Connection conn) throws SQLException {
-        String sql = "DELETE FROM empleados WHERE dni=?";
+    public void delteTx(String id, Connection conn) throws SQLException {
+        String sql = "DELETE FROM empleados WHERE id=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, dni);
+            stmt.setInt(1, Integer.parseInt(id));
         }
     }
 
@@ -135,22 +137,22 @@ public class MySQLEmpleadosDao implements GenericDao<Empleado>, EmpleadoLegajoDa
     }
 
     @Override
-    public void setLegajo(String dni, Legajo legajo) throws SQLException {
-        String sql = "UPDATE empleados SET legajo=? WHERE dni=?";
+    public void setLegajo(String id, Legajo legajo) throws SQLException {
+        String sql = "UPDATE empleados SET legajo=? WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, legajo.getNroLegajo());
-            stmt.setString(2, dni);
+            stmt.setInt(2, Integer.parseInt(id));
 
             stmt.executeQuery();
         }
     }
 
     @Override
-    public void setLegajoTx(String dni, Legajo legajo, Connection conn) throws SQLException {
-        String sql = "UPDATE empleados SET legajo=? WHERE dni=?";
+    public void setLegajoTx(String id, Legajo legajo, Connection conn) throws SQLException {
+        String sql = "UPDATE empleados SET legajo=? WHERE id=?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, legajo.getNroLegajo());
-            stmt.setString(2, dni);
+            stmt.setInt(2, Integer.parseInt(id));
 
             stmt.executeQuery();
         }
